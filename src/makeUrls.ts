@@ -4,6 +4,7 @@ export interface CalendarEvent {
   location: string | null;
   startsAt: string;
   endsAt: string;
+  url: string | null;
 }
 
 const makeDuration = (event: CalendarEvent) => {
@@ -32,7 +33,8 @@ const makeGoogleCalendarUrl = (event: CalendarEvent) => makeUrl("https://calenda
   dates: `${makeTime(event.startsAt)}/${makeTime(event.endsAt)}`,
   location: event.location,
   text: event.name,
-  details: event.details
+  details: event.details,
+  URL: event.url
 });
 
 const makeOutlookCalendarUrl = (event: CalendarEvent) => makeUrl("https://outlook.live.com/owa", {
@@ -42,6 +44,7 @@ const makeOutlookCalendarUrl = (event: CalendarEvent) => makeUrl("https://outloo
   subject: event.name,
   location: event.location,
   body: event.details,
+  URL: event.url,
   allday: false,
   uid: new Date().getTime().toString(),
   path: "/calendar/view/Month"
@@ -55,7 +58,8 @@ const makeYahooCalendarUrl = (event: CalendarEvent) => makeUrl("https://calendar
   st: makeTime(event.startsAt),
   dur: makeDuration(event),
   desc: event.details,
-  in_loc: event.location
+  in_loc: event.location,
+  URL: event.url
 });
 
 const makeICSCalendarUrl = (event: CalendarEvent) => {
@@ -76,6 +80,7 @@ const makeICSCalendarUrl = (event: CalendarEvent) => {
     `SUMMARY:${event.name}`,
     `DESCRIPTION:${event.details}`,
     `LOCATION:${event.location}`,
+    `URL:${event.url}`,
     "END:VEVENT",
     "END:VCALENDAR"
   );
